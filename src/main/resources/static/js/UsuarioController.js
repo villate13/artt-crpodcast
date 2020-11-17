@@ -178,7 +178,7 @@ function iniciarSesion() {
             .then(function (response) {
                 if (response.data["userPassword"] === document.getElementById("inContraseña").value) {
                     iniciarLocalStorageUsuario(response.data["_id"])
-                    location.href = "panelUsuario.html";
+                    location.href = "panel.html";
                 } else {
                     alert("Contraseña incorrecta");
                 }
