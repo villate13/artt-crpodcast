@@ -177,7 +177,7 @@ function iniciarSesion() {
     axios.get('/api/v1/users/' + document.getElementById("inNickname").value)
             .then(function (response) {
                 if (response.data["userPassword"] === document.getElementById("inContraseña").value) {
-                    iniciarLocalStorageUsuario(response.data["_id"])
+                    iniciarLocalStorageUsuario(response.data["userNickname"])
                     location.href = "panel.html";
                 } else {
                     alert("Contraseña incorrecta");
@@ -202,15 +202,10 @@ function cerrarSesion() {
 function cargarUsuario() {
     axios.get('/api/v1/users/' + localStorage.getItem('Actual'))
             .then(function (response) {
-                document.getElementById("nombreUsuarioActual").innerHTML = response.data["nombreUsuario"] + " " + response.data["apellidoUsuario"];
-                document.getElementById("calificacionUsuarioActual").innerHTML = " Clasificacion: " + response.data["calificacionUsuario"];
-                document.getElementById("saldoUsuarioActual").innerHTML = "Saldo: $" + response.data["saldoUsuario"] + " USD";
-                document.getElementById("avatarUsuario").innerHTML = '<img src="img/' + response.data["imagenUsuario"] + '" class="img-circle" height="80" width="80" alt="Avatar">';
+                document.getElementById("nombreUsuarioActual").innerHTML = response.data["userNickname"];
+                document.getElementById("calificacionUsuarioActual").innerHTML = " Clasificación: " + response.data["userFeedback"];
 
-                //Actualizar los productos que estan en venta
-                actualizarProductosEnVenta();
-                actualizarTransaccionesEnCurso();
-                actualizarHistorialDeTransacciones();
+                
 
                 //actualizarHistorialDeTransacciones(response.data["cedulaUsuario"]);
             })
