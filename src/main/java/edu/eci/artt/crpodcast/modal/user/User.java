@@ -3,6 +3,7 @@ package edu.eci.artt.crpodcast.modal.user;
 import org.springframework.data.annotation.Id;
 
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  *
@@ -21,11 +22,14 @@ public class User {
     private int userFeedback;
     
     private List podcast;
+    private List commentaries;
 
     public User(String userPassword, String userNickname) {
         this.userPassword = userPassword;
         this.userNickname = userNickname;
         this.userFeedback = 0;
+        this.podcast = new ArrayList();
+        this.commentaries = new ArrayList();
     }
     
     public String getIdUser() {
@@ -91,6 +95,15 @@ public class User {
 
     public void setPodcast(List podcast) {
         this.podcast = podcast;
+    }
+
+     // commentaries
+     public List getCommentaries() {
+        return commentaries;
+    }
+
+    public void setCommentaries(List commentaries) {
+        this.commentaries = commentaries;
     }
     
 }
