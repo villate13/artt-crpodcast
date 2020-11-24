@@ -46,7 +46,7 @@
         rgba(7, 92, 32, 0.19),
         rgba(0, 0, 0, 0.04)
         ),url(img/fondoPortada.jpg);"
-        onload="cargarUsuario();cargarPodcast()">
+        onload="cargarUsuario()">
 
     <!-- Agregar header -->
     <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
@@ -65,7 +65,6 @@
         </div>
 
         <nav class="my-2 my-md-0 mr-md-3">
-            <a href="/crear.html" class="p-2 btn btn-light">Crear</a>
             <a href="/panel.html" class="p-2 btn btn-light">Panel</a>
         </nav>
         <a class="btn btn-outline-primary" href="index.html">Cerrar Sesión</a>
@@ -76,7 +75,7 @@
 
 
 
-    <section class="my-4 py-5">
+    <section class="my-4 py-5 bg-secondary">
         <div class="container bg-light rounded">
             <div class="row">
                 <div class="col-md-3 mx-2 my-3">
@@ -100,71 +99,38 @@
                     <div class="card bg-light border-primary">
                         <!-- podcast mas reciente -->
                         <div class="card-header">
-                            <h2>Podcast reciente: <b><span id="podcastTitle"></span></b></h2>
+                            <h2>Crear Tu podcast</h2>
                         </div>
-                            <div class="video-responsive" id="podcastURL"></div>
-                        <div class="card-body bg-primary">
-                            <div class="row">
-                                <div class="col">
-                                <sup class="text-light"><span id="podcastDate"></span></sup>
+                        <div class="container" style="padding:10px">
+                            <form >
+                                <div class="form-group ">
+                                    <label for="title" class="sr-only">Titulo Podcast</label>
+                                    <input type="text" class="form-control" id="title" placeholder="Titulo...">
                                 </div>
-                                <div class="col-sm-3">
-                                <div class="text-light" id="podcastFeedback"></div>
+                                <br>
+                                <div class="form-group ">
+                                    <label for="category" class="sr-only">Categoría</label>
+                                    <input type="text" class="form-control" id="category" placeholder="Categoría...">
                                 </div>
-
-                                        <div class="col col-sm-1">
-                                            <sup class="text-light"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check-square-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm10.03 4.97a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-                                            </svg></sup>
-                                        </div>
-                                        <div class="col col-sm-1">
-                                            <sup class="text-light"><span id="podcastLikes"></span></sup>
-                                        </div>
-                                
-                                        <div class="col col-sm-1">
-                                            <sup class="text-light"><svg  width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-share" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/>
-                                            </svg></sup>
-                                        </div>
-                                        <div class="col col-sm-1">
-                                            <sup class="text-light"><span id="podcastShares"></span></sup>
-                                        </div>
-                                   
+                                <br>
+                                <div class="form-group ">
+                                    <label for="url" class="sr-only">Link (youtube)</label>
+                                    <input type="text" class="form-control" id="url" placeholder="https://www.youtube.com/watch?v=M1SZ_ECV2TE">
+                                </div>
+                                <br>
+                                <button type="submit" onclick="crearNuevo()" class="btn btn-success mb-2">Crear</button>
+                            </form>
                             </div>
-                            <p class="text-light">Categoria: <span id="category"></span> </p>
-                            <a href="#"><button type="button" class="btn btn btn-info">Me gusta</button></a>  <a href="#"><button type="button" class="btn btn btn-light">Compartir</button></a> <a href="#"><button type="button" class="btn btn btn-success">Donar</button></a>
+                        <div class="card-body bg-primary">
+                            
+                            <p class="text-light">Estás creando un podcast de manera secilla y sin ningún costo</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="container bg-light rounded my-4">
-            <br>
-            <h1 class="text-dark font-weight-bold text-center">Comentarios</h1>
-            <hr style="background-color: #bdc3c7;">
-            <!-- comentarios -->
-            <div  id="comentarios"></div>
-            <br>
-            
-        </div>
-<div class="container bg-light rounded my-4">
-        <div class="col-md-5 mx-2 my-4">
-                    <div class="card border-dark" style="background-color: #95a5a6;">
-                        <div class="card-header bg-light" >
-                            <h2>Otros Podcast</h2>
-                        </div>
-                        <div class="card-body mx-3 my-3 rounded" style="background-color: #95a5a6;">
-                            <!-- podcasts viejos -->
-                            <div id="otrosPodcast"></div>
-
-                        </div>
-                        <div class="card-body bg-primary">
-                            <h3 class="text-light">Podcast Anteriores</h3>
-                        </div>
-                    </div>
-                </div>
-                </div>
+        
     </section>
 
     </main>

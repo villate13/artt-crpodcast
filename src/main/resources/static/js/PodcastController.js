@@ -207,7 +207,6 @@ function cargarPodcast() {
 }
 
 
-
 function actualizarProductosEnVenta() {
     var tabla = document.getElementById("TablaProducto");
     tabla.innerHTML = "<th>Variedad</th><th>Proveedor</th><th>Cantidad</th><th>Precio</th><th>Total</th><th>Fecha de Cosecha</th><th></th>" +

@@ -215,6 +215,29 @@ function cargarUsuario() {
 
 }
 
+function crearNuevo(){
+    axios.post('/api/v1/podcast/',{
+        "1": {
+            podcastTitle:  document.getElementById("title").value,
+            category: document.getElementById("category").value,
+            podcastURL: document.getElementById("url").value,
+            participants: [localStorage.getItem('Actual')],
+            commentaries: [
+                ["Juan Gabriel","Excelente podcast, tiene un tema interesante"],
+                ["Andres C","El tema es interesante"],
+                ["Julian H","Me gusto mucho, volvere.."]
+            ]
+        }})
+        .then(function (response) {
+            location.href = "panel.html";
+            alert("Podcast Creado");
+        })
+        .catch(function (error) {
+                alert("Error, No se pudo cargar podcasts");
+        })
+
+}
+
 
 
 function actualizarProductosEnVenta() {

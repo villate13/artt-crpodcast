@@ -23,15 +23,15 @@ public class Podcast {
     private List participants;
     private List commentaries;
 
-    public Podcast(String podcastTitle, String category, String podcastURL) {
+    public Podcast(String podcastTitle, String category, String podcastURL, List participants, List commentaries) {
         this.podcastTitle = podcastTitle;
         this.category = category;
         this.podcastURL = podcastURL;
         this.podcastFeedback = 0;
         this.podcastLikes = 0;
         this.podcastShares = 0;
-        this.participants = new ArrayList();
-        this.commentaries = new ArrayList();
+        this.participants = participants;
+        this.commentaries = commentaries;
 
     }
 
