@@ -56,7 +56,7 @@ function guardarProveedoresLocalStorage(idUsuario, idVProducto) {
  * @returns {undefined}
  */
 function guardarProductoPorIdTransaccion(idVProducto, idTransaccion) {
-    localStorage.setItem('A0t'+idTransaccion, String(idVProducto));
+    localStorage.setItem('A0t' + idTransaccion, String(idVProducto));
     //alert('IdProducto: ' + localStorage.getItem(idVProducto));
 }
 
@@ -69,7 +69,7 @@ function guardarProductoPorIdTransaccion(idVProducto, idTransaccion) {
  */
 function cerrarLocalStorageUsuario() {
 
-//localStorage.removeItem('key');
+    //localStorage.removeItem('key');
     localStorage.clear();
 }
 
@@ -111,7 +111,7 @@ function registrarUsuario() {
         alertify.error(alerta);
         //document.getElementById("alertDiv").innerHTML += divAlerta(alerta);
     }
-    
+
     if (document.getElementById("upPassword").value === '') {
         nullAlert = true;
         alerta = ' Ingrese contraseña.';
@@ -175,17 +175,17 @@ function registrarUsuario() {
  */
 function iniciarSesion() {
     axios.get('/api/v1/users/' + document.getElementById("inNickname").value)
-            .then(function (response) {
-                if (response.data["userPassword"] === document.getElementById("inContraseña").value) {
-                    iniciarLocalStorageUsuario(response.data["userNickname"])
-                    location.href = "panel.html";
-                } else {
-                    alert("Contraseña incorrecta");
-                }
-            })
-            .catch(function (error) {
-                alert("Este usuario no existe");
-            })
+        .then(function (response) {
+            if (response.data["userPassword"] === document.getElementById("inContraseña").value) {
+                iniciarLocalStorageUsuario(response.data["userNickname"])
+                location.href = "panel.html";
+            } else {
+                alert("Contraseña incorrecta");
+            }
+        })
+        .catch(function (error) {
+            alert("Este usuario no existe");
+        })
 }
 
 function cerrarSesion() {
@@ -201,40 +201,46 @@ function cerrarSesion() {
  */
 function cargarUsuario() {
     axios.get('/api/v1/users/' + localStorage.getItem('Actual'))
-            .then(function (response) {
-                document.getElementById("nombreUsuarioActual").innerHTML = response.data["userNickname"];
-                document.getElementById("calificacionUsuarioActual").innerHTML = " Clasificación: " + response.data["userFeedback"];
+        .then(function (response) {
+            document.getElementById("nombreUsuarioActual").innerHTML = response.data["userNickname"];
+            document.getElementById("calificacionUsuarioActual").innerHTML = " Clasificación: " + response.data["userFeedback"];
 
-                
 
-                //actualizarHistorialDeTransacciones(response.data["cedulaUsuario"]);
-            })
-            .catch(function (error) {
-                alert("Error, No se pudo cargar usuario");
-            })
+
+            //actualizarHistorialDeTransacciones(response.data["cedulaUsuario"]);
+        })
+        .catch(function (error) {
+            alert("Error, No se pudo cargar usuario");
+        })
 
 }
 
-function crearNuevo(){
-    axios.post('/api/v1/podcast/',{
-        "1": {
-            podcastTitle:  document.getElementById("title").value,
-            category: document.getElementById("category").value,
-            podcastURL: document.getElementById("url").value,
-            participants: [localStorage.getItem('Actual')],
-            commentaries: [
-                ["Juan Gabriel","Excelente podcast, tiene un tema interesante"],
-                ["Andres C","El tema es interesante"],
-                ["Julian H","Me gusto mucho, volvere.."]
-            ]
-        }})
-        .then(function (response) {
-            location.href = "panel.html";
-            alert("Podcast Creado");
+function crearNuevo() {
+    if (document.getElementById("title").value !== '' && document.getElementById("category").value !== '' && document.getElementById("url").value !== '') {
+        axios.post('/api/v1/podcast/', {
+            "1": {
+                podcastTitle: document.getElementById("title").value,
+                category: document.getElementById("category").value,
+                podcastURL: document.getElementById("url").value,
+                participants: [localStorage.getItem('Actual')],
+                commentaries: [
+                    ["Juan Gabriel", "Excelente podcast, tiene un tema interesante"],
+                    ["Andres C", "El tema es interesante"],
+                    ["Julian H", "Me gusto mucho, volvere.."]
+                ]
+            }
         })
-        .catch(function (error) {
+            .then(function (response) {
+                location.href = "panel.html";
+                alert("Podcast Creado");
+            })
+            .catch(function (error) {
                 alert("Error, No se pudo cargar podcasts");
-        })
+            })
+    } else {
+        alert("Error, debe llenar todos los campos");
+    }
+
 
 }
 
@@ -243,39 +249,39 @@ function crearNuevo(){
 function actualizarProductosEnVenta() {
     var tabla = document.getElementById("TablaProducto");
     tabla.innerHTML = "<th>Variedad</th><th>Proveedor</th><th>Cantidad</th><th>Precio</th><th>Total</th><th>Fecha de Cosecha</th><th></th>" +
-            "<tbody id='tbodyTablaProducto'></tbody>";
+        "<tbody id='tbodyTablaProducto'></tbody>";
 
     var tbody = document.getElementById("tbodyTablaProducto");
     axios.get('/commerceProducto/variedades')
-            .then(function (response) {
+        .then(function (response) {
 
-                for (var x in response.data) {
-                    if (response.data[x]["idUsuario"] !== parseInt(localStorage.getItem('Actual'))) {
+            for (var x in response.data) {
+                if (response.data[x]["idUsuario"] !== parseInt(localStorage.getItem('Actual'))) {
 
-                        guardarProductoPorVariedadProducto(response.data[x]["idProducto"], response.data[x]["idVProducto"]);
-                        guardarProveedoresLocalStorage(response.data[x]["idUsuario"], response.data[x]["idVProducto"]);
-                        var filatr = document.createElement("tr");
-                        var resultado = response.data[x]["cantidadVProducto"] * response.data[x]["precioProducto"];
-                        var idvProducto = "'" + String(response.data[x]["idVProducto"]) + "'";
-                        filatr.innerHTML = '<td>' + response.data[x]["nombreVProducto"] + '</td>' +
-                                '<td id="tdProveedor' + response.data[x]["idVProducto"] + '"></td>' +
-                                '<td>' + response.data[x]["cantidadVProducto"] + 'kg ' + '</td>' +
-                                '<td>$' + response.data[x]["precioProducto"] + ' COP (Precio/Kilo)</td>' +
-                                '<td><b>$' + resultado + ' COP</b></td>' +
-                                '<td>' + response.data[x]["fechaCosecha"] + '</td>' +
-                                '<td> <button onclick="crearTransaccion(' + idvProducto +
-                                ',' + localStorage.getItem('Actual') +
-                                ',' + response.data[x]["idUsuario"] +
-                                ')" class="btn btn-primary">COMPRAR</button> </td>';
-                        tbody.appendChild(filatr);
-                    }
+                    guardarProductoPorVariedadProducto(response.data[x]["idProducto"], response.data[x]["idVProducto"]);
+                    guardarProveedoresLocalStorage(response.data[x]["idUsuario"], response.data[x]["idVProducto"]);
+                    var filatr = document.createElement("tr");
+                    var resultado = response.data[x]["cantidadVProducto"] * response.data[x]["precioProducto"];
+                    var idvProducto = "'" + String(response.data[x]["idVProducto"]) + "'";
+                    filatr.innerHTML = '<td>' + response.data[x]["nombreVProducto"] + '</td>' +
+                        '<td id="tdProveedor' + response.data[x]["idVProducto"] + '"></td>' +
+                        '<td>' + response.data[x]["cantidadVProducto"] + 'kg ' + '</td>' +
+                        '<td>$' + response.data[x]["precioProducto"] + ' COP (Precio/Kilo)</td>' +
+                        '<td><b>$' + resultado + ' COP</b></td>' +
+                        '<td>' + response.data[x]["fechaCosecha"] + '</td>' +
+                        '<td> <button onclick="crearTransaccion(' + idvProducto +
+                        ',' + localStorage.getItem('Actual') +
+                        ',' + response.data[x]["idUsuario"] +
+                        ')" class="btn btn-primary">COMPRAR</button> </td>';
+                    tbody.appendChild(filatr);
                 }
+            }
 
-                for (var i = 0; i < localStorage.length - 1; i++) {
-                    agregarProveedor(i);
-                }
+            for (var i = 0; i < localStorage.length - 1; i++) {
+                agregarProveedor(i);
+            }
 
-            })
+        })
 }
 
 function agregarProveedor(x) {
@@ -284,66 +290,66 @@ function agregarProveedor(x) {
     if (String(producto).substr(0, 4) === '5c0f') {
         //alert(localStorage.getItem(producto));
         axios.get('/commerceUsuario/usuarios/' + localStorage.getItem(producto))
-                .then(function (response) {
+            .then(function (response) {
 
-                    document.getElementById('tdProveedor' + localStorage.key(x)).innerHTML = response.data["nombreUsuario"] + ' ' +
-                            response.data["apellidoUsuario"] + ' ' +
-                            '<br> Calificación: ' + response.data["calificacionUsuario"];
+                document.getElementById('tdProveedor' + localStorage.key(x)).innerHTML = response.data["nombreUsuario"] + ' ' +
+                    response.data["apellidoUsuario"] + ' ' +
+                    '<br> Calificación: ' + response.data["calificacionUsuario"];
 
-                })
+            })
     }
 }
 
 function actualizarTransaccionesEnCurso() {
     var tabla = document.getElementById("tablaTransaccionesEnCurso");
     tabla.innerHTML = "<thead><tr><th>ID Transacción</th><th>Producto</th><th>Total</th><th></th></tr></thead>" +
-            "<tbody id='tbodyTablaTransaccionesEnCursoV'></tbody><tbody id='tbodyTablaTransaccionesEnCursoC'></tbody>";
+        "<tbody id='tbodyTablaTransaccionesEnCursoV'></tbody><tbody id='tbodyTablaTransaccionesEnCursoC'></tbody>";
 
     var tbodyV = document.getElementById("tbodyTablaTransaccionesEnCursoV");
     axios.get('/commerceTransaccion/transacciones/vendedor/' + localStorage.getItem('Actual'))
-            .then(function (response) {
-                for (var x in response.data) {
-                    if (response.data[x]["completada"] === false) {
-                        guardarProductoPorIdTransaccion(response.data[x]["idVProducto"], response.data[x]["idTransaccion"]);
+        .then(function (response) {
+            for (var x in response.data) {
+                if (response.data[x]["completada"] === false) {
+                    guardarProductoPorIdTransaccion(response.data[x]["idVProducto"], response.data[x]["idTransaccion"]);
 
-                        var filatr = document.createElement("tr");
-                        filatr.innerHTML = '<td>' + response.data[x]["idTransaccion"] + '</td>'
-                                + '<td id="tdNombreProducto' + 'A0t'+response.data[x]["idTransaccion"] + '"></td>'
-                                + '<td id="tdTotalProducto' + 'A0t'+response.data[x]["idTransaccion"] + '"></td>'
-                                + '<td> <a href="transaccion.html" class="label label-primary">VER</a> </td>';
-                        tbodyV.appendChild(filatr);
-                    }
+                    var filatr = document.createElement("tr");
+                    filatr.innerHTML = '<td>' + response.data[x]["idTransaccion"] + '</td>'
+                        + '<td id="tdNombreProducto' + 'A0t' + response.data[x]["idTransaccion"] + '"></td>'
+                        + '<td id="tdTotalProducto' + 'A0t' + response.data[x]["idTransaccion"] + '"></td>'
+                        + '<td> <a href="transaccion.html" class="label label-primary">VER</a> </td>';
+                    tbodyV.appendChild(filatr);
                 }
-                for (var i = 0; i < localStorage.length - 1; i++) {
-                    agregarPoducto(i);
-                }
+            }
+            for (var i = 0; i < localStorage.length - 1; i++) {
+                agregarPoducto(i);
+            }
 
 
-            })
+        })
 
     var tbodyC = document.getElementById("tbodyTablaTransaccionesEnCursoC");
     axios.get('/commerceTransaccion/transacciones/comprador/' + localStorage.getItem('Actual'))
-            .then(function (response) {
-                for (var x in response.data) {
-                    if (response.data[x]["completada"] === false) {
-                        guardarProductoPorIdTransaccion(response.data[x]["idVProducto"], response.data[x]["idTransaccion"]);
+        .then(function (response) {
+            for (var x in response.data) {
+                if (response.data[x]["completada"] === false) {
+                    guardarProductoPorIdTransaccion(response.data[x]["idVProducto"], response.data[x]["idTransaccion"]);
 
-                        var filatr = document.createElement("tr");
-                        filatr.innerHTML = '<td>' + response.data[x]["idTransaccion"] + '</td>'
-                                + '<td id="tdNombreProducto' + 'A0t'+response.data[x]["idTransaccion"] + '"></td>'
-                                + '<td id="tdTotalProducto' + 'A0t'+response.data[x]["idTransaccion"] + '"></td>'
-                                + '<td> <a href="transaccon.html" class="label label-primary">VER</a> </td>';
-                        tbodyC.appendChild(filatr);
-                    }
+                    var filatr = document.createElement("tr");
+                    filatr.innerHTML = '<td>' + response.data[x]["idTransaccion"] + '</td>'
+                        + '<td id="tdNombreProducto' + 'A0t' + response.data[x]["idTransaccion"] + '"></td>'
+                        + '<td id="tdTotalProducto' + 'A0t' + response.data[x]["idTransaccion"] + '"></td>'
+                        + '<td> <a href="transaccon.html" class="label label-primary">VER</a> </td>';
+                    tbodyC.appendChild(filatr);
                 }
-                for (var i = 0; i < localStorage.length - 1; i++) {
-                    agregarPoducto(i);
-                }
-                
-                
+            }
+            for (var i = 0; i < localStorage.length - 1; i++) {
+                agregarPoducto(i);
+            }
 
 
-            })
+
+
+        })
 }
 
 function agregarPoducto(x) {
@@ -352,66 +358,66 @@ function agregarPoducto(x) {
     if (String(idProducto).substr(0, 3) === 'A0t') {
         //alert(localStorage.getItem(producto));
         axios.get('/commerceProducto/variedad/' + String(localStorage.getItem(idProducto)))
-                .then(function (response) {
-                    //alert('idProducto'+localStorage.getItem(idProducto)+' '+response.data["nombreVProducto"]);
-                    
-                    //alert(localStorage.key(x)+' '+localStorage.getItem(idProducto) +''+ response.data["nombreVProducto"]);
-                    var total = response.data["precioProducto"] * response.data["cantidadVProducto"];
-                    
-                    document.getElementById('tdNombreProducto' + localStorage.key(x)).innerHTML = response.data["nombreVProducto"] ;
-                    document.getElementById('tdTotalProducto' + localStorage.key(x)).innerHTML = total;
+            .then(function (response) {
+                //alert('idProducto'+localStorage.getItem(idProducto)+' '+response.data["nombreVProducto"]);
 
-                })
+                //alert(localStorage.key(x)+' '+localStorage.getItem(idProducto) +''+ response.data["nombreVProducto"]);
+                var total = response.data["precioProducto"] * response.data["cantidadVProducto"];
+
+                document.getElementById('tdNombreProducto' + localStorage.key(x)).innerHTML = response.data["nombreVProducto"];
+                document.getElementById('tdTotalProducto' + localStorage.key(x)).innerHTML = total;
+
+            })
     }
 }
 
 function actualizarHistorialDeTransacciones() {
     var tabla = document.getElementById("tbodyTablaHitorial");
     tabla.innerHTML = "<thead><tr><th>ID Transacción</th><th>Producto</th><th>Total</th><th></th></tr></thead>" +
-            "<tbody id='tbodyTablaHitorialV'></tbody><tbody id='tbodyTablaHitorialC'></tbody>";
+        "<tbody id='tbodyTablaHitorialV'></tbody><tbody id='tbodyTablaHitorialC'></tbody>";
 
     var tbodyV = document.getElementById("tbodyTablaHitorialV");
     axios.get('/commerceTransaccion/transacciones/vendedor/' + localStorage.getItem('Actual'))
-            .then(function (response) {
+        .then(function (response) {
 
-                for (var x in response.data) {
-                    if (response.data[x]["completada"] === true) {
-                        guardarProductoPorIdTransaccion(response.data[x]["idVProducto"], response.data[x]["idTransaccion"]);
+            for (var x in response.data) {
+                if (response.data[x]["completada"] === true) {
+                    guardarProductoPorIdTransaccion(response.data[x]["idVProducto"], response.data[x]["idTransaccion"]);
 
-                        var filatr = document.createElement("tr");
-                        filatr.innerHTML = '<td>' + response.data[x]["idTransaccion"] + '</td>'
-                                + '<td id="tdNombreProducto' + 'A0t'+response.data[x]["idTransaccion"] + '"></td>'
-                                + '<td id="tdTotalProducto' + 'A0t'+response.data[x]["idTransaccion"] + '"></td>'
-                                + '<td> <a href="transaccon.html" class="label label-primary">VER</a> </td>';
-                        tbodyV.appendChild(filatr);
-                    }
+                    var filatr = document.createElement("tr");
+                    filatr.innerHTML = '<td>' + response.data[x]["idTransaccion"] + '</td>'
+                        + '<td id="tdNombreProducto' + 'A0t' + response.data[x]["idTransaccion"] + '"></td>'
+                        + '<td id="tdTotalProducto' + 'A0t' + response.data[x]["idTransaccion"] + '"></td>'
+                        + '<td> <a href="transaccon.html" class="label label-primary">VER</a> </td>';
+                    tbodyV.appendChild(filatr);
                 }
-                for (var i = 0; i < localStorage.length - 1; i++) {
-                    agregarPoducto(i);
-                }
+            }
+            for (var i = 0; i < localStorage.length - 1; i++) {
+                agregarPoducto(i);
+            }
 
-            })
+        })
     var tbodyC = document.getElementById("tbodyTablaHitorialC");
     axios.get('/commerceTransaccion/transacciones/comprador/' + localStorage.getItem('Actual'))
-            .then(function (response) {
-                for (var x in response.data) {
-                    if (response.data[x]["completada"] === true) {
-                        guardarProductoPorIdTransaccion(response.data[x]["idVProducto"], response.data[x]["idTransaccion"]);
+        .then(function (response) {
+            for (var x in response.data) {
+                if (response.data[x]["completada"] === true) {
+                    guardarProductoPorIdTransaccion(response.data[x]["idVProducto"], response.data[x]["idTransaccion"]);
 
-                        var filatr = document.createElement("tr");
-                        filatr.innerHTML = '<td>' + response.data[x]["idTransaccion"] + '</td>'
-                                + '<td id="tdNombreProducto' + 'A0t'+response.data[x]["idTransaccion"] + '"></td>'
-                                + '<td id="tdTotalProducto' + 'A0t'+response.data[x]["idTransaccion"] + '"></td>'
-                                + '<td> <a href="transaccon.html" class="label label-primary">VER</a> </td>';
-                        tbodyC.appendChild(filatr);
-                    }
+                    var filatr = document.createElement("tr");
+                    filatr.innerHTML = '<td>' + response.data[x]["idTransaccion"] + '</td>'
+                        + '<td id="tdNombreProducto' + 'A0t' + response.data[x]["idTransaccion"] + '"></td>'
+                        + '<td id="tdTotalProducto' + 'A0t' + response.data[x]["idTransaccion"] + '"></td>'
+                        + '<td> <a href="transaccon.html" class="label label-primary">VER</a> </td>';
+                    tbodyC.appendChild(filatr);
                 }
-                for (var i = 0; i < localStorage.length - 1; i++) {
-                    agregarPoducto(i);
-                }
+            }
+            for (var i = 0; i < localStorage.length - 1; i++) {
+                agregarPoducto(i);
+            }
 
 
-            })
+        })
 }
 
 
@@ -428,18 +434,18 @@ function actualizarAnadirProducto() {
 
     document.getElementById("cedulaUsuarioActual").innerHTML = localStorage.getItem('Actual');
     axios.get('/commerceProducto/productos')
-            .then(function (response) {
-                var selectCategoriaProducto = document.getElementById("selectCategoriaProducto");
-                for (var x in response.data) {
-                    //alert(response.data[x]["nombreProducto"]);
-                    var opt = document.createElement("option");
-                    opt.setAttribute("value", response.data[x]["idProducto"]);
-                    var text = document.createTextNode(response.data[x]["nombreProducto"]);
-                    opt.appendChild(text);
-                    selectCategoriaProducto.appendChild(opt);
-                    localStorage.setItem('reg' + response.data[x]["idProducto"], response.data[x]["nombreProducto"]);
-                }
-            })
+        .then(function (response) {
+            var selectCategoriaProducto = document.getElementById("selectCategoriaProducto");
+            for (var x in response.data) {
+                //alert(response.data[x]["nombreProducto"]);
+                var opt = document.createElement("option");
+                opt.setAttribute("value", response.data[x]["idProducto"]);
+                var text = document.createTextNode(response.data[x]["nombreProducto"]);
+                opt.appendChild(text);
+                selectCategoriaProducto.appendChild(opt);
+                localStorage.setItem('reg' + response.data[x]["idProducto"], response.data[x]["nombreProducto"]);
+            }
+        })
 
 
 }
@@ -459,10 +465,10 @@ function registrarNuevoVariedadProducto() {
 
         }
     })
-            .then(function (response) {
-                console.log(response.data);
-                alert("Producto Registrado Exitosamente.");
-            })
+        .then(function (response) {
+            console.log(response.data);
+            alert("Producto Registrado Exitosamente.");
+        })
 }
 
 
@@ -479,7 +485,7 @@ function crearTransaccion(idVProducto, cedulaComprador, cedulaProveedor) {
             idVProducto: idVProducto
         }
     })
-            .then(function (response) {
-                location.href = "transaccion.html";
-            })
+        .then(function (response) {
+            location.href = "transaccion.html";
+        })
 }
