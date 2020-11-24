@@ -51,7 +51,7 @@ public class PodcastAPIController {
     @RequestMapping(method = RequestMethod.POST, path = "podcast")
     public ResponseEntity<?> createNewPodcast(@RequestBody String podcast) {
         // Formato de json
-        // {"1":{"userEmail":"webpostman@gmail.com","userPassword":"123","userNickname":"postmanweb"}}
+        // {"1":{"podcastTitle":"title","podcastCategory":"categoria","podcastURL":"url"}}
         try {
             System.out.println("Creando nuevo podcast...");
             // Pasar el String JSON a un Map
@@ -68,6 +68,7 @@ public class PodcastAPIController {
 
 
             if (pService.getPodcastByTitle(pc.getPodcastTitle()) == null) {
+                pc.setPodcastDate(new Date());
                 pService.createNewPodcast(pc);
                 return new ResponseEntity<>(HttpStatus.CREATED);
             } else {

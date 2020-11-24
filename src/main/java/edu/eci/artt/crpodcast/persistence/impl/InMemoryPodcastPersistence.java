@@ -12,6 +12,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+
 /**
  *
  * @author jmvillatei
@@ -25,8 +28,9 @@ public class InMemoryPodcastPersistence implements PodcastPersistence {
     @Override
     public List<Podcast> getAllPodcast() {
         List<Podcast> listaPodcast = null;
+        
         try {
-            listaPodcast = pRepository.findAll();
+            listaPodcast = pRepository.findAll(Sort.by(Sort.Direction.DESC, "podcastDate"));
             return listaPodcast;
         } catch (Exception ex) {
             System.out.println("No se han podido obtener los podcast");
@@ -40,7 +44,7 @@ public class InMemoryPodcastPersistence implements PodcastPersistence {
 
             Boolean existePodcast = false;
             List<Podcast> listaPodcast = new ArrayList<>();
-            listaPodcast = getAllPodcast();
+            listaPodcast = pRepository.findAll();
 
             for (Podcast x : listaPodcast) {
                 if (x.getPodcastTitle().equals(podcast.getPodcastTitle())) {
@@ -76,11 +80,8 @@ public class InMemoryPodcastPersistence implements PodcastPersistence {
         Podcast podcastNuevo = null;
         try {
             Optional<Podcast> data = pRepository.findById(id);
-            System.out.println("OK- findbyID");
             if (data.isPresent()) {
                 podcastNuevo = data.get();
-                System.out.println(podcastNuevo.getPodcastTitle());
-
                 return podcastNuevo;
                 
               } else {

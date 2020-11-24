@@ -18,14 +18,16 @@ public class Podcast {
     private Date podcastDate;
     private int podcastFeedback;
 
+    private String podcastURL;
+
     private List participants;
     private List commentaries;
 
-    public Podcast(String podcastTitle, String category) {
+    public Podcast(String podcastTitle, String category, String podcastURL) {
         this.podcastTitle = podcastTitle;
         this.category = category;
+        this.podcastURL = podcastURL;
         this.podcastFeedback = 0;
-        this.podcastDate = new Date();
         this.podcastLikes = 0;
         this.podcastShares = 0;
         this.participants = new ArrayList();
@@ -94,6 +96,15 @@ public class Podcast {
 
     public void setPodcastFeedback(int podcastFeedback) {
         this.podcastFeedback = podcastFeedback;
+    }
+
+    // podcastURL
+    public String getPodcastURL() {
+        return podcastURL;
+    }
+
+    public void setPodcastURL(String podcastURL) {
+        this.podcastURL = podcastURL;
     }
 
     // participants

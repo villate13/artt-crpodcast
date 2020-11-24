@@ -46,7 +46,7 @@
         rgba(7, 92, 32, 0.19),
         rgba(0, 0, 0, 0.04)
         ),url(img/fondoPortada.jpg);"
-        onload="cargarUsuario();cargarPodcast()">
+        onload="cargarPodcast()">
 
     <!-- Agregar header -->
     <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
@@ -65,11 +65,11 @@
         </div>
 
         <nav class="my-2 my-md-0 mr-md-3">
+            <a href="/index.html" class="p-2  btn btn-light">Inicio</a>
             <a href="/podcast.html" class="p-2 btn btn-light">Podcast</a>
-            <a href="/mis.html" class="p-2 btn btn-light">Mis Podcasts</a>
-            <a href="/panel.html" class="p-2 btn btn-light">Panel</a>
+            <a class="p-2  btn btn-light" href="/signup.html">Sign Up</a>
         </nav>
-        <a class="btn btn-outline-primary" href="index.html">Cerrar Sesión</a>
+        <a class="btn btn-outline-primary" href="login.html">Sign In</a>
     </div>
     <!-- ---FIN---- -->
 
@@ -77,27 +77,11 @@
 
 
 
-    <section class="my-4 py-5 bg-secondary">
-        <div class="container bg-light rounded">
+    <section class="my-4 py-5" >
+        <div class="container center rounded" style="background: #000000b8; padding: 20px">
             <div class="row">
-                <div class="col-md-3 mx-2 my-3">
-                    <div class="card bg-light border-dark">
-                        <div class="mx-3 my-3">
-                            <svg width="60%" height="60%" viewBox="0 0 16 16" class="bi bi-person-square rounded mx-auto d-block" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
-                                <path fill-rule="evenodd" d="M2 15v-1c0-1 1-4 6-4s6 3 6 4v1H2zm6-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-                            </svg>
-                        </div>
-                        <div class="card-body bg-dark">
-                            <h2 class="text-light text-center"><span id="nombreUsuarioActual"></span></h2>
-                            <hr style="background-color: #bdc3c7;">
-                            <p class="text-center text-light">#Podcast: <span class="font-weight-bold">3</span></p>
-                            <p class="text-center text-light"><span id="calificacionUsuarioActual" class="font-weight-bold"></span></p>
-                            <button type="button" class="btn btn-outline-dark">Perfil</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-8 mx-2 my-3">
+                
+                <div class="col-md-6 mx-2 my-3">
                     <div class="card bg-light border-primary">
                         <!-- podcast mas reciente -->
                         <div class="card-header">
@@ -133,7 +117,22 @@
                                    
                             </div>
                             <p class="text-light">Categoria: <span id="category"></span> </p>
-                            <a href="/login.html"><button type="button" class="btn btn btn-info">Me gusta</button></a>  <a href="/login.html"><button type="button" class="btn btn btn-light">Compartir</button></a> <a href="/login.html"><button type="button" class="btn btn btn-success">Donar</button></a>
+                            <a href="/login.html"><button type="button" class="btn btn btn-info">Comentar</button></a>  <a href="/login.html"><button type="button" class="btn btn btn-light">Compartir</button></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5 mx-2 my-4">
+                    <div class="card border-dark" style="background-color: #95a5a6;">
+                        <div class="card-header bg-light" >
+                            <h2>Otros Podcast</h2>
+                        </div>
+                        <div class="card-body mx-3 my-3 rounded" style="background-color: #95a5a6;">
+                            <!-- podcasts viejos -->
+                            <div id="otrosPodcast"></div>
+
+                        </div>
+                        <div class="card-body bg-primary">
+                            <h3 class="text-light">Podcast Anteriores</h3>
                         </div>
                     </div>
                 </div>
@@ -149,23 +148,6 @@
             <br>
             
         </div>
-<div class="container bg-light rounded my-4">
-        <div class="col-md-5 mx-2 my-4">
-                    <div class="card border-dark" style="background-color: #95a5a6;">
-                        <div class="card-header bg-light" >
-                            <h2>Otros Podcast</h2>
-                        </div>
-                        <div class="card-body mx-3 my-3 rounded" style="background-color: #95a5a6;">
-                            <!-- podcasts viejos -->
-                            <div id="otrosPodcast"></div>
-
-                        </div>
-                        <div class="card-body bg-primary">
-                            <h3 class="text-light">Podcast Anteriores</h3>
-                        </div>
-                    </div>
-                </div>
-                </div>
     </section>
 
     </main>
@@ -195,7 +177,6 @@
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
 
-        <script src="js/UsuarioController.js"></script>
         <script src="js/PodcastController.js"></script>
         <script src="js/axios.min.js"></script>
 </body>
